@@ -1,0 +1,23 @@
+.{
+    .name = .sorvi_elmac,
+    .version = "0.0.0",
+    .fingerprint = 0xb3479842d1dfc23c,
+    .dependencies = .{
+        .sorvi = .{
+            .path = "../sorvi",
+        },
+        .json = .{
+            .url = "git+https://github.com/nlohmann/json.git#3946872265598aed5a7aea68cad4d9d1f168bd4b",
+            .hash = "N-V-__8AANyD9QAixjFvq3ehhk-wh8opYbHWDux5Q-EweEWZ",
+        },
+        .elma_classic = .{
+            .url = "git+https://github.com/Cloudef/elma-classic.git#a5f42f29a4a605614fa63343ed9a48a6d728b734",
+            .hash = "N-V-__8AACuqGwCorzpxrk0JHSJDsffQPC5Arg2xqYhxUxho",
+        },
+    },
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "src",
+    },
+}
