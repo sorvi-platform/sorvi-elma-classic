@@ -11,8 +11,8 @@
             .hash = "N-V-__8AANyD9QAixjFvq3ehhk-wh8opYbHWDux5Q-EweEWZ",
         },
         .elma_classic = .{
-            .url = "git+https://github.com/Cloudef/elma-classic.git#a5f42f29a4a605614fa63343ed9a48a6d728b734",
-            .hash = "N-V-__8AACuqGwCorzpxrk0JHSJDsffQPC5Arg2xqYhxUxho",
+            .url = "git+https://github.com/Cloudef/elma-classic.git#b2a620c0f5a09ea2b854bad9e7c7221a4ad1581e",
+            .hash = "N-V-__8AAMxNHABaY7KKmpbQ1A8VX0rom2ok109FnkOMBT1Q",
         },
     },
     .paths = .{

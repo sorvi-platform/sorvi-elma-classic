@@ -30,7 +30,7 @@ const ELMA_HEIGHT = 600;
 ns_since_last_update: u64 = 0,
 elma_time: u64 = 0,
 
-pub fn init(_: *@This()) !void {
+pub fn core_v1_init(_: *@This()) !void {
     try sorvi.raster_v1.init(.{
         .format = .xbgr8888,
         .scaling = &.{
@@ -81,7 +81,7 @@ pub fn init(_: *@This()) !void {
     elma_platform_wait_for_frame();
 }
 
-pub fn deinit(_: *@This()) void {}
+pub fn core_v1_deinit(_: *@This()) void {}
 
 fn toElmaKey(code: sorvi.kbm_v1.scancode_t) ?u32 {
     return switch (code) {
@@ -150,13 +150,13 @@ fn toElmaKey(code: sorvi.kbm_v1.scancode_t) ?u32 {
 
 extern fn elma_platform_key(u32, bool) void;
 
-pub fn kbmKeyPress(_: *@This(), _: u64, _: sorvi.kbm_v1.absolute_t, _: sorvi.kbm_v1.modifiers_t, code: sorvi.kbm_v1.scancode_t) !void {
+pub fn kbm_v1_key_press(_: *@This(), _: u64, _: sorvi.kbm_v1.absolute_t, _: sorvi.kbm_v1.modifiers_t, code: sorvi.kbm_v1.scancode_t) !void {
     if (toElmaKey(code)) |key| {
         elma_platform_key(key, true);
     }
 }
 
-pub fn kbmKeyRelease(_: *@This(), _: u64, _: sorvi.kbm_v1.absolute_t, _: sorvi.kbm_v1.modifiers_t, code: sorvi.kbm_v1.scancode_t) !void {
+pub fn kbm_v1_key_release(_: *@This(), _: u64, _: sorvi.kbm_v1.absolute_t, _: sorvi.kbm_v1.modifiers_t, code: sorvi.kbm_v1.scancode_t) !void {
     if (toElmaKey(code)) |key| {
         elma_platform_key(key, false);
     }
@@ -164,7 +164,7 @@ pub fn kbmKeyRelease(_: *@This(), _: u64, _: sorvi.kbm_v1.absolute_t, _: sorvi.k
 
 extern fn elma_platform_button(u32, bool) void;
 
-pub fn kbmButtonPress(_: *@This(), _: u64, _: sorvi.kbm_v1.absolute_t, _: sorvi.kbm_v1.modifiers_t, button: sorvi.kbm_v1.button_t) !void {
+pub fn kbm_v1_button_press(_: *@This(), _: u64, _: sorvi.kbm_v1.absolute_t, _: sorvi.kbm_v1.modifiers_t, button: sorvi.kbm_v1.button_t) !void {
     switch (button) {
         .left => elma_platform_button(0, true),
         .right => elma_platform_button(1, true),
@@ -172,7 +172,7 @@ pub fn kbmButtonPress(_: *@This(), _: u64, _: sorvi.kbm_v1.absolute_t, _: sorvi.
     }
 }
 
-pub fn kbmButtonRelease(_: *@This(), _: u64, _: sorvi.kbm_v1.absolute_t, _: sorvi.kbm_v1.modifiers_t, button: sorvi.kbm_v1.button_t) !void {
+pub fn kbm_v1_button_release(_: *@This(), _: u64, _: sorvi.kbm_v1.absolute_t, _: sorvi.kbm_v1.modifiers_t, button: sorvi.kbm_v1.button_t) !void {
     switch (button) {
         .left => elma_platform_button(0, false),
         .right => elma_platform_button(1, false),
@@ -180,13 +180,13 @@ pub fn kbmButtonRelease(_: *@This(), _: u64, _: sorvi.kbm_v1.absolute_t, _: sorv
     }
 }
 
-pub fn kbmMouseMotion(_: *@This(), _: u64, _: sorvi.kbm_v1.absolute_t, _: sorvi.kbm_v1.modifiers_t, _: sorvi.kbm_v1.relative_t) !void {}
+pub fn kbm_v1_mouse_motion(_: *@This(), _: u64, _: sorvi.kbm_v1.absolute_t, _: sorvi.kbm_v1.modifiers_t, _: sorvi.kbm_v1.relative_t) !void {}
 
-pub fn kbmMouseScroll(_: *@This(), _: u64, _: sorvi.kbm_v1.absolute_t, _: sorvi.kbm_v1.modifiers_t, _: sorvi.kbm_v1.relative_t) !void {}
+pub fn kbm_v1_mouse_scroll(_: *@This(), _: u64, _: sorvi.kbm_v1.absolute_t, _: sorvi.kbm_v1.modifiers_t, _: sorvi.kbm_v1.relative_t) !void {}
 
 extern fn elma_platform_mix_sound([*]align(1) i16, usize) void;
 
-pub fn audioTick(_: *@This(), u8_buffer: []u8) !void {
+pub fn audio_v1_tick(_: *@This(), u8_buffer: []u8) !void {
     const s16_buffer = std.mem.bytesAsSlice(i16, u8_buffer);
     elma_platform_mix_sound(s16_buffer.ptr, s16_buffer.len);
 }
@@ -196,7 +196,7 @@ var frame_cond: sorvi.Condition = .init;
 
 extern fn elma_platform_frame_data(u16, u16, [*]u8, u64) void;
 
-pub fn videoTick(self: *@This(), frame: sorvi.video_v1.frame_t) !u64 {
+pub fn video_v1_tick(self: *@This(), frame: sorvi.video_v1.frame_t) !u64 {
     std.debug.assert(frame.w == ELMA_WIDTH and frame.h == ELMA_HEIGHT);
     const target_rate = std.time.ns_per_s / 60;
     self.elma_time += frame.time_ns;
@@ -211,6 +211,8 @@ pub fn videoTick(self: *@This(), frame: sorvi.video_v1.frame_t) !u64 {
     sorvi.raster_v1.damage(&.{.{ .x = 0, .y = 0, .w = frame.w, .h = frame.h }});
     return target_rate - self.ns_since_last_update;
 }
+
+pub fn video_v1_configuration(_: *@This(), _: sorvi.video_v1.configuration_t, _: u16, _: u16) void {}
 
 export fn elma_platform_wait_for_frame() void {
     frame_mutex.lock();

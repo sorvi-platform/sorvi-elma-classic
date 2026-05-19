@@ -3,7 +3,7 @@
 #include <sys/stat.h>
 #include <directinput/scancodes.h>
 #include <eol/eol.h>
-#include "platform_impl.h"
+#include "platform/implementation.h"
 #include "sound_engine.h"
 #include "pic8.h"
 #include "keys.h"
@@ -91,9 +91,6 @@ void handle_events() {
     memcpy(scancodes_prev, scancodes, sizeof(scancodes));
   }
   elma_platform_wait_for_frame();
-  if (scancodes[DIK_L]) {
-    add_text_to_buffer("lol");
-  }
   EolClient->tick();
 }
 
@@ -212,4 +209,8 @@ palette::~palette() { delete[] (Color*)data; }
 
 void palette::set() {
   screen_palette = (Color*)data;
+}
+
+bool platform_save_screenshot() {
+  return false;
 }
