@@ -66,7 +66,7 @@ pub fn build(b: *std.Build) void {
                     "src/renderer/object_overlay.cpp", "sprite.cpp",                  "src/debug/profiler.cpp",      "src/eol/console.cpp",
                     "src/eol/eol.cpp",                 "src/eol/battle.cpp",          "src/eol/eol_table.cpp",       "src/util/util.cpp",
                 },
-                .flags = &.{ "-std=c++20", "-DELMA_VERSION=\"1.4\"", "-DELMA_SHAREWARE=1", "-Dmain=elma_main", "-O0" },
+                .flags = &.{ "-std=c++20", "-DELMA_VERSION=\"1.4\"", "-DELMA_SHAREWARE=1", "-Dmain=elma_main", "-O3" },
                 .root = elma_dep.path(""),
             });
             mod.addIncludePath(elma_dep.path(""));
