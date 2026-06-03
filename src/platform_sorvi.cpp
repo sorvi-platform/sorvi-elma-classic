@@ -61,13 +61,13 @@ extern "C" {
     buttons[button] = pressed;
   }
 
-  [[noreturn]] extern void sorvi_core_v1_panic(const char *msg, uintptr_t addr);
+  [[noreturn]] extern void sorvi_core_v1_panic(const char *msg, uintptr_t addr, const void *stacktrace);
   extern void elma_platform_wait_for_frame(void);
   extern void elma_platform_finish_frame(void);
 };
 
 void message_box(const char *msg) {
-  sorvi_core_v1_panic(msg, 0);
+  sorvi_core_v1_panic(msg, 0, nullptr);
 }
 
 bool platform_render_error(pic8 *buffer) {
