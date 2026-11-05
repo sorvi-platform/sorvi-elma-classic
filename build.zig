@@ -1,7 +1,7 @@
 const std = @import("std");
 const sorvi = @import("sorvi");
 
-pub fn build(b: *std.Build) void {
+pub fn build(b: *std.Build) !void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
@@ -44,7 +44,7 @@ pub fn build(b: *std.Build) void {
             });
             mod.addCSourceFiles(.{
                 .files = &.{"src/platform_sorvi.cpp"},
-                .flags = &.{ "-std=c++20", "-O0" },
+                .flags = &.{ "-std=c++20", "-O3" },
             });
             mod.addCSourceFiles(.{
                 .files = &.{
@@ -80,7 +80,7 @@ pub fn build(b: *std.Build) void {
     _ = assets.addCopyDirectory(b.path("assets"), "", .{});
     _ = assets.addCopyDirectory(elma_dep.path("resources"), "resources", .{});
 
-    const elma = sorvi.addSorviCore(b, .{
+    const elma = try sorvi.addSorviCore(b, .{
         .name = "elma-classic",
         .root_module = b.createModule(.{
             .root_source_file = b.path("src/elma-classic.zig"),
@@ -95,7 +95,7 @@ pub fn build(b: *std.Build) void {
         .assets = assets,
     });
     elma.root_module.linkLibrary(elma_lib);
-    elma.fixup(b);
+    try elma.fixup(b);
 
     const step = b.step("run", "Run elma-classic in a reference frontend");
     step.dependOn(&sorvi.addRunSorviCore(b, frontend, elma).step);

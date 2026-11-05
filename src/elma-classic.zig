@@ -1,6 +1,3 @@
-const std = @import("std");
-const sorvi = @import("sorvi");
-
 // TODO: sorvi needs text input extension
 // TODO: pass mouse to elma
 
@@ -220,3 +217,6 @@ export fn elma_platform_wait_for_frame() void {
     frame_cond.signal();
     frame_cond.wait(&frame_mutex);
 }
+
+const std = @import("std");
+const sorvi = @import("sorvi");

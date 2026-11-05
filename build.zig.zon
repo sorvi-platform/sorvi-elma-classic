@@ -4,7 +4,8 @@
     .fingerprint = 0xb3479842d1dfc23c,
     .dependencies = .{
         .sorvi = .{
-            .path = "../sorvi",
+            .url = "git+https://gist.github.com/4296b2d56b85ad056b2184b06d9e5635.git#caf71f7507f9e2d4da805d8c77621fb1ab51fad5",
+            .hash = "sorvi-0.0.0-SORVIM0BAAB9Bj64v1d-ps8EAqKnWH6qIwWA-skIXZYN",
         },
         .json = .{
             .url = "git+https://github.com/nlohmann/json.git#3946872265598aed5a7aea68cad4d9d1f168bd4b",
